@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIA Operations Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #ffffff;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            text-shadow: 0 0 20px #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border-right: 1px solid #ffffff;
+        }
+
+        .nav-tab:last-child {
+            border-right: none;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        .nav-tab.active {
+            background: rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 15px #ffffff;
+        }
+
+        .tab-content {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #ffffff;
+            border-radius: 0 0 10px 10px;
+            padding: 20px;
+            min-height: 600px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .info-card h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #ffffff;
+            padding: 12px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .data-table th {
+            background: rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 10px #ffffff;
+            font-weight: bold;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .add-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .form-input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        select.form-input {
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        .classified-banner {
+            background: linear-gradient(90deg, #ff0000, #ffff00, #ff0000);
+            color: #000;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: flash 2s infinite;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .grid-background {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="grid-background">
+    <div class="container">
+        <div class="classified-banner">
+            ★ CLASSIFIED ★ TOP SECRET ★ EYES ONLY ★
+        </div>
+        
+        <div class="header">
+            <h1>CIA OPERATIONS DATABASE</h1>
+            <p>Central Intelligence Agency - Classification Level: TOP SECRET</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('info')">CIA Information</button>
+            <button class="nav-tab" onclick="showTab('ranks')">Personnel Ranks</button>
+            <button class="nav-tab" onclick="showTab('watchlist')">Watchlist</button>
+            <button class="nav-tab" onclick="showTab('blacklist')">BL: Blacklist</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- CIA Information Tab -->
+            <div id="info" class="tab-pane active">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>AGENCY OVERVIEW</h3>
+                        <p><strong>Established:</strong> September 18, 1947</p>
+                        <p><strong>Headquarters:</strong> Langley, Virginia</p>
+                        <p><strong>Director:</strong> [CLASSIFIED]</p>
+                        <p><strong>Personnel:</strong> ~21,000 (Estimated)</p>
+                        <p><strong>Budget:</strong> $15.2 Billion (FY 2024)</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>MISSION STATEMENT</h3>
+                        <p>To collect, analyze, evaluate, and disseminate foreign intelligence to assist the President and senior policymakers in making decisions relating to national security.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>CORE FUNCTIONS</h3>
+                        <ul>
+                            <li>Foreign Intelligence Collection</li>
+                            <li>Counterintelligence Operations</li>
+                            <li>Covert Operations</li>
+                            <li>Analysis and Assessment</li>
+                            <li>Technical Intelligence</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>ORGANIZATIONAL STRUCTURE</h3>
+                        <p><strong>Directorate of Operations:</strong> Human Intelligence</p>
+                        <p><strong>Directorate of Analysis:</strong> Intelligence Analysis</p>
+                        <p><strong>Directorate of Science & Technology:</strong> Technical Collection</p>
+                        <p><strong>Directorate of Support:</strong> Administrative Support</p>
+                        <p><strong>Directorate of Digital Innovation:</strong> Cyber Operations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personnel Ranks Tab -->
+            <div id="ranks" class="tab-pane">
+                <button class="add-btn" onclick="addPersonnel()">+ Add Personnel</button>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th>Timezone</th>
+                            <th>Paygrade</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="personnel-table">
+                        <tr>
+                            <td>[REDACTED]</td>
+                            <td>Operations Officer</td>
+                            <td>EST</td>
+                            <td>GS-13</td>
+                            <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
+                        </tr>
+                        <tr>
+                            <td>[REDACTED]</td>
+                            <td>Intelligence Analyst</td>
+                            <td>PST</td>
+                            <td>GS-12</td>
+                            <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Watchlist Tab -->
+            <div id="watchlist" class="tab-pane">
+                <button class="add-btn" onclick="addWatchlistEntry()">+ Add to Watchlist</button>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Reason</th>
+                            <th>Added By</th>
+                            <th>Date Added</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="watchlist-table">
+                        <tr>
+                            <td>Subject_001</td>
+                            <td>Suspicious foreign contacts</td>
+                            <td>Agent Smith</td>
+                            <td>2024-01-15</td>
+                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                        </tr>
+                        <tr>
+                            <td>Target_Alpha</td>
+                            <td>Attempted infiltration</td>
+                            <td>Agent Johnson</td>
+                            <td>2024-02-03</td>
+                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Blacklist Tab -->
+            <div id="blacklist" class="tab-pane">
+                <button class="add-btn" onclick="addBlacklistEntry()">+ Add to Blacklist</button>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Rank</th>
+                            <th>Duration</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blacklist-table">
+                        <tr>
+                            <td>Operative_X</td>
+                            <td>Field Agent</td>
+                            <td>Permanent</td>
+                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                        </tr>
+                        <tr>
+                            <td>Asset_Beta</td>
+                            <td>Analyst</td>
+                            <td>6 months</td>
+                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab panes
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab pane
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function addPersonnel() {
+            const table = document.getElementById('personnel-table');
+            const row = table.insertRow();
+            
+            const nameCell = row.insertCell(0);
+            const rankCell = row.insertCell(1);
+            const timezoneCell = row.insertCell(2);
+            const paygradeCell = row.insertCell(3);
+            const actionsCell = row.insertCell(4);
+            
+            nameCell.innerHTML = '<input type="text" class="form-input" placeholder="Enter name">';
+            rankCell.innerHTML = '<input type="text" class="form-input" placeholder="Enter rank">';
+            timezoneCell.innerHTML = '<select class="form-input"><option>EST</option><option>CST</option><option>MST</option><option>PST</option><option>GMT</option></select>';
+            paygradeCell.innerHTML = '<input type="text" class="form-input" placeholder="Enter paygrade">';
+            actionsCell.innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">Delete</button>';
+        }
+
+        function addWatchlistEntry() {
+            const table = document.getElementById('watchlist-table');
+            const row = table.insertRow();
+            
+            const usernameCell = row.insertCell(0);
+            const reasonCell = row.insertCell(1);
+            const addedByCell = row.insertCell(2);
+            const dateCell = row.insertCell(3);
+            const actionsCell = row.insertCell(4);
+            
+            usernameCell.innerHTML = '<input type="text" class="form-input" placeholder="Enter username">';
+            reasonCell.innerHTML = '<input type="text" class="form-input" placeholder="Enter reason">';
+            addedByCell.innerHTML = '<input type="text" class="form-input" placeholder="Added by">';
+            dateCell.innerHTML = '<input type="date" class="form-input" value="' + new Date().toISOString().split('T')[0] + '">';
+            actionsCell.innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">Remove</button>';
+        }
+
+        function addBlacklistEntry() {
+            const table = document.getElementById('blacklist-table');
+            const row = table.insertRow();
+            
+            const usernameCell = row.insertCell(0);
+            const rankCell = row.insertCell(1);
+            const durationCell = row.insertCell(2);
+            const actionsCell = row.insertCell(3);
+            
+            usernameCell.innerHTML = '<input type="text" class="form-input" placeholder="Enter username">';
+            rankCell.innerHTML = '<input type="text" class="form-input" placeholder="Enter rank">';
+            durationCell.innerHTML = '<select class="form-input"><option>Permanent</option><option>12 months</option><option>6 months</option><option>3 months</option><option>1 month</option><option>2 weeks</option><option>1 week</option><option>3 days</option><option>1 day</option></select>';
+            actionsCell.innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">Remove</button>';
+        }
+
+        function deleteRow(btn) {
+            const row = btn.closest('tr');
+            row.remove();
+        }
+
+        // Add some dynamic effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add typing effect to classified banner
+            const banner = document.querySelector('.classified-banner');
+            let originalText = banner.textContent;
+            let isTyping = false;
+            
+            setInterval(() => {
+                if (!isTyping) {
+                    isTyping = true;
+                    banner.textContent = '';
+                    let i = 0;
+                    const typeInterval = setInterval(() => {
+                        banner.textContent += originalText[i];
+                        i++;
+                        if (i >= originalText.length) {
+                            clearInterval(typeInterval);
+                            setTimeout(() => {
+                                isTyping = false;
+                            }, 3000);
+                        }
+                    }, 50);
+                }
+            }, 8000);
+        });
+    </script>
+</body>
+</html>
+
