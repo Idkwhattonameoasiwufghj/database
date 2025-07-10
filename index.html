@@ -218,178 +218,254 @@
                 linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
         }
+
+        .login-landing {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .login-panel {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 32px 32px 24px 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+            min-width: 320px;
+            max-width: 90vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .login-panel h1 {
+            color: #1976d2;
+            margin-bottom: 18px;
+            font-size: 2em;
+            letter-spacing: 2px;
+        }
+        .login-panel h3 {
+            margin: 0 0 18px 0;
+            font-size: 1.2em;
+            color: #333;
+            text-align: center;
+        }
+        .login-panel input[type="text"],
+        .login-panel input[type="password"] {
+            width: 100%;
+            margin-bottom: 14px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .login-panel button {
+            width: 100%;
+            padding: 10px;
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+        .login-panel button:hover {
+            background: #1252a2;
+        }
+        .login-panel .error {
+            color: #d32f2f;
+            font-size: 1em;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .login-panel .success {
+            color: #388e3c;
+            font-size: 1em;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .main-content {
+            display: none;
+        }
+        .main-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body class="grid-background">
-    <div class="container">
-        <div class="classified-banner">
-            ★ CLASSIFIED ★ TOP SECRET ★ EYES ONLY ★
+    <div id="loginLanding" class="login-landing">
+        <div class="login-panel" id="loginPanel">
+            <h1>CIA OPERATIONS</h1>
+            <h3>Log in</h3>
+            <form id="loginForm" autocomplete="off">
+                <input type="text" id="username" placeholder="Username" required autofocus />
+                <input type="password" id="password" placeholder="Password" required />
+                <button type="submit">Log in</button>
+                <div id="loginMsg"></div>
+            </form>
         </div>
-        
-        <div class="header">
-            <h1>CIA OPERATIONS DATABASE</h1>
-            <p>Central Intelligence Agency - Classification Level: TOP SECRET</p>
-        </div>
+    </div>
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <div class="classified-banner">
+                ★ CLASSIFIED ★ TOP SECRET ★ EYES ONLY ★
+            </div>
+            
+            <div class="header">
+                <h1>CIA OPERATIONS DATABASE</h1>
+                <p>Central Intelligence Agency - Classification Level: TOP SECRET</p>
+            </div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('info')">CIA Information</button>
-            <button class="nav-tab" onclick="showTab('ranks')">Personnel Ranks</button>
-            <button class="nav-tab" onclick="showTab('watchlist')">Watchlist</button>
-            <button class="nav-tab" onclick="showTab('blacklist')">BL: Blacklist</button>
-        </div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('info')">CIA Information</button>
+                <button class="nav-tab" onclick="showTab('ranks')">Personnel Ranks</button>
+                <button class="nav-tab" onclick="showTab('watchlist')">Watchlist</button>
+                <button class="nav-tab" onclick="showTab('blacklist')">BL: Blacklist</button>
+            </div>
 
-        <div class="tab-content">
-            <!-- CIA Information Tab -->
-            <div id="info" class="tab-pane active">
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h3>AGENCY OVERVIEW</h3>
-                        <p><strong>Established:</strong> September 18, 1947</p>
-                        <p><strong>Headquarters:</strong> Langley, Virginia</p>
-                        <p><strong>Director:</strong> [CLASSIFIED]</p>
-                        <p><strong>Personnel:</strong> ~21,000 (Estimated)</p>
-                        <p><strong>Budget:</strong> $15.2 Billion (FY 2024)</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <h3>MISSION STATEMENT</h3>
-                        <p>To collect, analyze, evaluate, and disseminate foreign intelligence to assist the President and senior policymakers in making decisions relating to national security.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <h3>CORE FUNCTIONS</h3>
-                        <ul>
-                            <li>Foreign Intelligence Collection</li>
-                            <li>Counterintelligence Operations</li>
-                            <li>Covert Operations</li>
-                            <li>Analysis and Assessment</li>
-                            <li>Technical Intelligence</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="info-card">
-                        <h3>ORGANIZATIONAL STRUCTURE</h3>
-                        <p><strong>Directorate of Operations:</strong> Human Intelligence</p>
-                        <p><strong>Directorate of Analysis:</strong> Intelligence Analysis</p>
-                        <p><strong>Directorate of Science & Technology:</strong> Technical Collection</p>
-                        <p><strong>Directorate of Support:</strong> Administrative Support</p>
-                        <p><strong>Directorate of Digital Innovation:</strong> Cyber Operations</p>
+            <div class="tab-content">
+                <!-- CIA Information Tab -->
+                <div id="info" class="tab-pane active">
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>AGENCY OVERVIEW</h3>
+                            <p><strong>Established:</strong> September 18, 1947</p>
+                            <p><strong>Headquarters:</strong> Langley, Virginia</p>
+                            <p><strong>Director:</strong> [CLASSIFIED]</p>
+                            <p><strong>Personnel:</strong> ~21,000 (Estimated)</p>
+                            <p><strong>Budget:</strong> $15.2 Billion (FY 2024)</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>MISSION STATEMENT</h3>
+                            <p>To collect, analyze, evaluate, and disseminate foreign intelligence to assist the President and senior policymakers in making decisions relating to national security.</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>CORE FUNCTIONS</h3>
+                            <ul>
+                                <li>Foreign Intelligence Collection</li>
+                                <li>Counterintelligence Operations</li>
+                                <li>Covert Operations</li>
+                                <li>Analysis and Assessment</li>
+                                <li>Technical Intelligence</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3>ORGANIZATIONAL STRUCTURE</h3>
+                            <p><strong>Directorate of Operations:</strong> Human Intelligence</p>
+                            <p><strong>Directorate of Analysis:</strong> Intelligence Analysis</p>
+                            <p><strong>Directorate of Science & Technology:</strong> Technical Collection</p>
+                            <p><strong>Directorate of Support:</strong> Administrative Support</p>
+                            <p><strong>Directorate of Digital Innovation:</strong> Cyber Operations</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Personnel Ranks Tab -->
-            <div id="ranks" class="tab-pane">
-                <button class="add-btn" onclick="addPersonnel()">+ Add Personnel</button>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Rank</th>
-                            <th>Timezone</th>
-                            <th>Paygrade</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="personnel-table">
-                        <tr>
-                            <td>[REDACTED]</td>
-                            <td>Operations Officer</td>
-                            <td>EST</td>
-                            <td>GS-13</td>
-                            <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
-                        </tr>
-                        <tr>
-                            <td>[REDACTED]</td>
-                            <td>Intelligence Analyst</td>
-                            <td>PST</td>
-                            <td>GS-12</td>
-                            <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <!-- Personnel Ranks Tab -->
+                <div id="ranks" class="tab-pane">
+                    <button class="add-btn" onclick="addPersonnel()">+ Add Personnel</button>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Rank</th>
+                                <th>Timezone</th>
+                                <th>Paygrade</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="personnel-table">
+                            <tr>
+                                <td>[REDACTED]</td>
+                                <td>Operations Officer</td>
+                                <td>EST</td>
+                                <td>GS-13</td>
+                                <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
+                            </tr>
+                            <tr>
+                                <td>[REDACTED]</td>
+                                <td>Intelligence Analyst</td>
+                                <td>PST</td>
+                                <td>GS-12</td>
+                                <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <!-- Watchlist Tab -->
-            <div id="watchlist" class="tab-pane">
-                <button class="add-btn" onclick="addWatchlistEntry()">+ Add to Watchlist</button>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Reason</th>
-                            <th>Added By</th>
-                            <th>Date Added</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="watchlist-table">
-                        <tr>
-                            <td>Subject_001</td>
-                            <td>Suspicious foreign contacts</td>
-                            <td>Agent Smith</td>
-                            <td>2024-01-15</td>
-                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>Target_Alpha</td>
-                            <td>Attempted infiltration</td>
-                            <td>Agent Johnson</td>
-                            <td>2024-02-03</td>
-                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <!-- Watchlist Tab -->
+                <div id="watchlist" class="tab-pane">
+                    <button class="add-btn" onclick="addWatchlistEntry()">+ Add to Watchlist</button>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Reason</th>
+                                <th>Added By</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="watchlist-table">
+                            <tr>
+                                <td>Subject_001</td>
+                                <td>Suspicious foreign contacts</td>
+                                <td>Agent Smith</td>
+                                <td>2024-01-15</td>
+                                <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>Target_Alpha</td>
+                                <td>Attempted infiltration</td>
+                                <td>Agent Johnson</td>
+                                <td>2024-02-03</td>
+                                <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <!-- Blacklist Tab -->
-            <div id="blacklist" class="tab-pane">
-                <button class="add-btn" onclick="addBlacklistEntry()">+ Add to Blacklist</button>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Rank</th>
-                            <th>Duration</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="blacklist-table">
-                        <tr>
-                            <td>Operative_X</td>
-                            <td>Field Agent</td>
-                            <td>Permanent</td>
-                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
-                        </tr>
-                        <tr>
-                            <td>Asset_Beta</td>
-                            <td>Analyst</td>
-                            <td>6 months</td>
-                            <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <!-- Blacklist Tab -->
+                <div id="blacklist" class="tab-pane">
+                    <button class="add-btn" onclick="addBlacklistEntry()">+ Add to Blacklist</button>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Rank</th>
+                                <th>Duration</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blacklist-table">
+                            <tr>
+                                <td>Operative_X</td>
+                                <td>Field Agent</td>
+                                <td>Permanent</td>
+                                <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>Asset_Beta</td>
+                                <td>Analyst</td>
+                                <td>6 months</td>
+                                <td><button class="delete-btn" onclick="deleteRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function showTab(tabName) {
-            // Hide all tab panes
-            const panes = document.querySelectorAll('.tab-pane');
-            panes.forEach(pane => pane.classList.remove('active'));
-            
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.nav-tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected tab pane
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-
+        // --- 人員資料 ---
         function addPersonnel() {
             const table = document.getElementById('personnel-table');
             const row = table.insertRow();
@@ -444,7 +520,43 @@
             row.remove();
         }
 
-        // Add some dynamic effects
+        // 登入流程
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const msg = document.getElementById('loginMsg');
+            if (user === 'RAPTOR' && pass === 'ADMIN123') {
+                msg.textContent = '登入成功！';
+                msg.className = 'success';
+                setTimeout(() => {
+                    document.getElementById('loginLanding').style.display = 'none';
+                    document.getElementById('mainContent').classList.add('active');
+                }, 600);
+            } else {
+                msg.textContent = '帳號或密碼錯誤';
+                msg.className = 'error';
+            }
+        });
+
+        // --- tab切換與登入驗證 ---
+        function showTab(tabName) {
+            // Hide all tab panes
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab pane
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // --- 其他原有功能 ---
         document.addEventListener('DOMContentLoaded', function() {
             // Add typing effect to classified banner
             const banner = document.querySelector('.classified-banner');
@@ -468,6 +580,40 @@
                     }, 50);
                 }
             }, 8000);
+        });
+    </script>
+</body>
+</html>
+                        i++;
+                        if (i >= originalText.length) {
+                            clearInterval(typeInterval);
+                            setTimeout(() => {
+                                isTyping = false;
+                            }, 3000);
+                        }
+                    }, 50);
+                }
+            }, 8000);
+
+            renderPersonnel();
+            renderWatchlist();
+            renderBlacklist();
+        });
+
+        // --- 登入驗證 ---
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const msg = document.getElementById('loginMsg');
+            if (user === 'RAPTOR' && pass === 'ADMIN123') {
+                msg.textContent = '登入成功！';
+                msg.className = 'success';
+                // 可在此處執行登入後的其他操作
+            } else {
+                msg.textContent = '帳號或密碼錯誤';
+                msg.className = 'error';
+            }
         });
     </script>
 </body>
